@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 # information to display
-KERNEL=$(uname -r)
-STORAGE=$(df -h | grep home | awk '{print $3"/"$2" ["$5"]"}')
+STORAGE=$(df -h | grep nvme0n1p3 | awk '{print $3"/"$2" ["$5"]"}')
 MEMORY=$(free -m | grep Mem | awk '{print $3"MiB / "$2"MiB" }')
-
+PACKAGES=$(pacman -Qq | wc -l)
+BATTERY=$(cat /sys/class/power_supply/BAT1/capacity)
+SEP='•'
 # Uptime
 if [ $(uptime -p | wc -w) == '3' ]; then
 	UPTIME=$(uptime -p | awk '{print $2,"mins"}')
@@ -12,5 +13,8 @@ else
 	UPTIME=$(uptime -p | awk '{print $2"hr(s) "$4"mins "}')
 fi
 
-echo -e "\e[36m$line\e[32m Kernel: \e[37m$KERNEL \e[36m$line \e[33m Uptime: \e[37m$UPTIME \e[36m$line \e[34m Disk: \e[37m$STORAGE \e[36m$line \e[35m Memory: \e[37m$MEMORY"
-
+echo -e "\e[35m Uptime: \e[39m$UPTIME \e[36m$SEP \
+\e[31m  Charge: \e[39m$BATTERY% \e[36m$SEP \
+\e[33m Pkgs: \e[39m$PACKAGES \e[36m$SEP \
+\e[34m Mem: \e[39m$MEMORY \e[36m$SEP \
+\e[32m Space:\e[39m$STORAGE"
