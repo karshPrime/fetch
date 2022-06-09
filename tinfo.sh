@@ -32,6 +32,6 @@ do
     echo -e "\e[36m$line \e[35m Memory.....: \e[37m$MEMORY"
   fi
   ((INDEX = INDEX + 1))
-done < $HOME/Dev/Scripts/Fetch/icons.txt
+done < $HOME/Dev/fetch/icons.txt
 
 echo ""
