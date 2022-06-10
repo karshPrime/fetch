@@ -17,4 +17,4 @@ echo -e "\e[35m Uptime: \e[39m$UPTIME \e[36m$SEP \
 \e[31m  Charge: \e[39m$BATTERY% \e[36m$SEP \
 \e[33m Pkgs: \e[39m$PACKAGES \e[36m$SEP \
 \e[34m Mem: \e[39m$MEMORY \e[36m$SEP \
-\e[32m Space:\e[39m$STORAGE"
+\e[32m Disk: \e[39m$STORAGE"

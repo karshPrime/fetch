@@ -3,10 +3,11 @@
 # terminal system info script
 
 # information to display
-KERNEL=$(uname -r)
-STORAGE=$(df -h | grep home | awk '{print $3"/"$2" ["$5"]"}')
-MEMORY=$(free -m | grep Mem | awk '{print $3"MiB / "$2"MiB ["$2/$3"%]" }')
+STORAGE=$(df -h | grep nvme0n1p3 | awk '{print $3"/"$2" ["$5"]"}')
+MEMORY=$(free -m | grep Mem | awk '{print $3"MiB / "$2"MiB" }')
+PACKAGES=$(pacman -Qq | wc -l)
 SELECTED=$(( RANDOM % 34 * 6 ))
+CHARGE=$(cat /sys/class/power_supply/BAT1/capacity)
 INDEX=0
 
 # Uptime
@@ -21,17 +22,15 @@ clear
 while IFS= read -r line
 do
   if [ $INDEX -eq $(( SELECTED + 1 )) ]; then
-    echo -e "\e[36m$line \e[31m $USER@$HOST"
+    echo -e "\e[36m$line \e[31m $USER@$HOST [$CHARGE%]"
   elif [ $INDEX -eq $(( SELECTED + 2 )) ]; then
-    echo -e "\e[36m$line \e[32m Kernel.....: \e[37m$KERNEL"
+    echo -e "\e[36m$line \e[35m Uptime......: \e[37m$UPTIME"
   elif [ $INDEX -eq $(( SELECTED + 3 )) ]; then
-    echo -e "\e[36m$line \e[33m Uptime.....: \e[37m$UPTIME"
+    echo -e "\e[36m$line \e[33m Packages:...: \e[37m$PACKAGES"
   elif [ $INDEX -eq $(( SELECTED + 4 )) ]; then
-    echo -e "\e[36m$line \e[34m Disk.......: \e[37m$STORAGE"
+    echo -e "\e[36m$line \e[34m Disk........: \e[37m$STORAGE"
   elif [ $INDEX -eq $(( SELECTED + 5 )) ]; then
-    echo -e "\e[36m$line \e[35m Memory.....: \e[37m$MEMORY"
+    echo -e "\e[36m$line \e[32m Memory......: \e[37m$MEMORY"
   fi
   ((INDEX = INDEX + 1))
 done < $HOME/Dev/fetch/icons.txt
-
-echo ""
